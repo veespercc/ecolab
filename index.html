@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>GEO-ECO LAB — Практикум по геоэкологии и устойчивому развитию (§ 18–21)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-badge">
+        <div class="brand-icon">GE</div>
+        <div>
+          <div class="brand-title">GEO-ECO LAB</div>
+          <div class="brand-subtitle">Практикум по устойчивому развитию (§ 18–21)</div>
+        </div>
+      </a>
+      <div class="header-actions">
+        <span class="badge info">
+          <span class="status-dot"></span>
+          Мониторинг активен
+        </span>
+        <button onclick="StateManager.resetAll()" class="btn btn-danger-outline btn-sm">Сбросить</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    
+    <!-- Hero / Telemetry Card -->
+    <div class="card" style="margin-bottom: 20px; padding: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
+        <div style="max-width: 760px;">
+          <div class="badge" style="margin-bottom: 8px;">Академический стандарт РК · 11 класс</div>
+          <h1 style="font-size: 22px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px;">
+            Практикум по геоэкологии и устойчивому развитию (§ 18–21)
+          </h1>
+          <p style="color: var(--text-muted); font-size: 13px;">
+            Полный охват понятийной базы: 5 уровней управления, экологическая ёмкость ландшафтов, 6 слагаемых Wackernagel & Rees, шкала водного стресса ООН, мониторинг ледников Тянь-Шаня и регламенты ИУВР.
+          </p>
+        </div>
+        <div style="flex: 1; min-width: 240px; background: var(--bg-subtle); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-dim);">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12px; font-weight: 600;">
+            <span>Общий прогресс тренажёра</span>
+            <span id="overall-counter" style="font-family: var(--font-mono);">0 / 12</span>
+          </div>
+          <div class="progress-container">
+            <div id="overall-bar" class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: var(--text-muted);">
+            <span>Освоено тем</span>
+            <span id="overall-percent" style="font-family: var(--font-mono); font-weight: 600;">0%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 Module Bento Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px;">
+      
+      <!-- § 18 -->
+      <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge">Параграф 18</span>
+            <span id="badge-p18" class="badge">0 / 3</span>
+          </div>
+          <h2 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">
+            Местное управление природопользованием
+          </h2>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            Координация 5 уровней управления, категории «Регион» и «Населенный пункт», ветровая эрозия и гумус в Костанае, рекультивация Рудного Алтая и Караганды, 4 задачи МСУ.
+          </p>
+          <div style="border-top: 1px solid var(--border-dim); padding-top: 10px; margin-bottom: 16px; font-size: 12px; display: flex; flex-direction: column; gap: 4px;">
+            <div id="item-p18_t1" style="color: var(--text-muted);">[ ] 5 уровней и экологическая ёмкость</div>
+            <div id="item-p18_t2" style="color: var(--text-muted);">[ ] Концепция: Костанай vs Рудный Алтай</div>
+            <div id="item-p18_t3" style="color: var(--text-muted);">[ ] 4 задачи органов МСУ на плане города</div>
+          </div>
+        </div>
+        <a href="paragraph-18.html" class="btn btn-primary" style="width: 100%;">Открыть модуль § 18</a>
+      </div>
+
+      <!-- § 19 -->
+      <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge">Параграф 19</span>
+            <span id="badge-p19" class="badge">0 / 3</span>
+          </div>
+          <h2 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">
+            «Экологический след» и устойчивое развитие
+          </h2>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            Модель Wackernagel & Rees (1990, UBC), Global Footprint Network, 9 стран с экоследом >4 планет (ОАЭ 4.5, США 4.5), 4 зоны выхода за пределы, калькулятор 6 слагаемых.
+          </p>
+          <div style="border-top: 1px solid var(--border-dim); padding-top: 10px; margin-bottom: 16px; font-size: 12px; display: flex; flex-direction: column; gap: 4px;">
+            <div id="item-p19_t1" style="color: var(--text-muted);">[ ] Анализ 9 стран с экоследом > 4 планет</div>
+            <div id="item-p19_t2" style="color: var(--text-muted);">[ ] 4 географических зоны «выхода за пределы»</div>
+            <div id="item-p19_t3" style="color: var(--text-muted);">[ ] Балансировка 6 слагаемых (<= 1.0 планеты)</div>
+          </div>
+        </div>
+        <a href="paragraph-19.html" class="btn btn-primary" style="width: 100%;">Открыть модуль § 19</a>
+      </div>
+
+      <!-- § 20 -->
+      <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge">Параграф 20</span>
+            <span id="badge-p20" class="badge">0 / 3</span>
+          </div>
+          <h2 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">
+            Вода и «экологический след»
+          </h2>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            Шкала водного стресса (<10%... >40%), доля пресной воды 2.5%, аридные пояса (40% суши / 2% запасов), спад в Японии/Чаде/Нигерии, прогноз Всемирного водного совета.
+          </p>
+          <div style="border-top: 1px solid var(--border-dim); padding-top: 10px; margin-bottom: 16px; font-size: 12px; display: flex; flex-direction: column; gap: 4px;">
+            <div id="item-p20_t1" style="color: var(--text-muted);">[ ] Шкала стресса и критерии водного кризиса</div>
+            <div id="item-p20_t2" style="color: var(--text-muted);">[ ] Бассейны РК и прогноз Всемирного совета</div>
+            <div id="item-p20_t3" style="color: var(--text-muted);">[ ] Аридные пояса (40%/2%) и спад потребления</div>
+          </div>
+        </div>
+        <a href="paragraph-20.html" class="btn btn-primary" style="width: 100%;">Открыть модуль § 20</a>
+      </div>
+
+      <!-- § 21 -->
+      <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge">Параграф 21</span>
+            <span id="badge-p21" class="badge">0 / 3</span>
+          </div>
+          <h2 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">
+            Устойчивое водопользование
+          </h2>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            ИУВР, ВСУР 2002, капельное орошение (-30–70% воды, +20–90% урожая), ликвидация 25% потерь металлополимером, прогноз МГЭИК и таяние ледников Тянь-Шаня.
+          </p>
+          <div style="border-top: 1px solid var(--border-dim); padding-top: 10px; margin-bottom: 16px; font-size: 12px; display: flex; flex-direction: column; gap: 4px;">
+            <div id="item-p21_t1" style="color: var(--text-muted);">[ ] ИУВР, саммит 2002 и капельное орошение</div>
+            <div id="item-p21_t2" style="color: var(--text-muted);">[ ] Ремонт 25% утечек металлополимером</div>
+            <div id="item-p21_t3" style="color: var(--text-muted);">[ ] Прогноз МГЭИК и ледники Тянь-Шаня</div>
+          </div>
+        </div>
+        <a href="paragraph-21.html" class="btn btn-primary" style="width: 100%;">Открыть модуль § 21</a>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="shared.js"></script>
+  <script>
+    function renderHubStats() {
+      const stats = StateManager.getStats();
+      document.getElementById('overall-counter').innerText = `${stats.completedCount} / ${stats.totalCount}`;
+      document.getElementById('overall-percent').innerText = `${stats.percent}%`;
+      document.getElementById('overall-bar').style.width = `${stats.percent}%`;
+
+      [18, 19, 20, 21].forEach(p => {
+        const pCount = stats.byParagraph[p] || 0;
+        const badge = document.getElementById(`badge-p${p}`);
+        badge.innerText = `${pCount} / 3 выполнено`;
+        if (pCount === 3) badge.className = 'badge success';
+        else if (pCount > 0) badge.className = 'badge warning';
+      });
+
+      Object.keys(TASK_REGISTRY).forEach(taskId => {
+        const item = document.getElementById(`item-${taskId}`);
+        if (item && StateManager.isCompleted(taskId)) {
+          item.style.color = '#059669';
+          item.style.fontWeight = '600';
+          item.innerText = `[OK] ${TASK_REGISTRY[taskId].title}`;
+        }
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', renderHubStats);
+    window.addEventListener('geoeco_storage_update', renderHubStats);
+  </script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>§ 18. Местное управление природопользованием — GEO-ECO LAB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="header-container">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <a href="index.html" class="btn btn-secondary btn-sm">На главную</a>
+        <div style="font-size: 13px; font-weight: 600;">§ 18. Местное управление природопользованием</div>
+      </div>
+      <div class="header-actions">
+        <span id="module-progress" class="badge">0 / 3</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="workspace-grid">
+      
+      <div class="sidebar-panel">
+        <div class="tabs-nav">
+          <button class="tab-btn active" onclick="switchTask(1)">Задание 1</button>
+          <button class="tab-btn" onclick="switchTask(2)">Задание 2</button>
+          <button class="tab-btn" onclick="switchTask(3)">Задание 3</button>
+        </div>
+
+        <!-- Task 1: 5 уровней координации и категории РК -->
+        <div id="task-view-1" class="card">
+          <div class="badge" style="margin-bottom: 8px;">Задание 1</div>
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 6px;">Уровни координации и категории территорий</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            Для достижения целей устойчивого развития требуется координация между 5 уровнями органов управления, а территория РК разделена на две базовые категории. Заполните институциональную матрицу:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
+            <div>
+              <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 4px;">Две основные категории территории РК (§ 18):</label>
+              <select id="p18-t1-categories">
+                <option value="">-- Выберите деление --</option>
+                <option value="reg_settlement">Регион и Населенный пункт</option>
+                <option value="eco_basin">Экологический округ и Речной бассейн</option>
+                <option value="prov_distr">Провинция и Сельский округ</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 4px;">5 уровней согласованного управления природопользованием:</label>
+              <select id="p18-t1-levels">
+                <option value="">-- Выберите состав вертикали --</option>
+                <option value="standard_5">Республиканский, областной, городской, районный, местное самоуправление</option>
+                <option value="wrong_1">Только республиканский и областной акиматы</option>
+                <option value="wrong_2">Министерство экологии, бассейновые инспекции, лесхозы</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 4px;">Главное условие формирования экономики региона:</label>
+              <select id="p18-t1-capacity">
+                <option value="">-- Выберите фундаментальное условие --</option>
+                <option value="carrying_capacity">Не разрушать биосферу и оставаться в пределах экологической емкости ландшафтов</option>
+                <option value="max_output">Максимизация объемов добычи сырья без учета самовосстановления</option>
+              </select>
+            </div>
+          </div>
+
+          <button onclick="verifyTask1()" class="btn btn-primary" style="width: 100%;">Проверить институциональную модель</button>
+        </div>
+
+        <!-- Task 2: Региональное природопользование -->
+        <div id="task-view-2" class="card" style="display: none;">
+          <div class="badge" style="margin-bottom: 8px;">Задание 2</div>
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 6px;">Региональная концепция: Костанай vs Рудный Алтай</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            Успешность перехода к устойчивому природопользованию напрямую зависит от учета местной специфики. Определите комплекс мер для целевых районов:
+          </p>
+          
+          <div style="margin-bottom: 12px;">
+            <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 4px;">Костанайская область (зерносеяние, полеводство):</label>
+            <select id="t2-kostanay">
+              <option value="">-- Выберите экологический режим --</option>
+              <option value="mining_rehab">Рекультивация породных отвалов и шахтных провалов</option>
+              <option value="wind_erosion">Особый режим: защита от ветровой эрозии почв и деградации гумусного слоя</option>
+              <option value="flood_dikes">Строительство дамб для защиты от паводков</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 4px;">Горнодобывающие центры (Рудный Алтай, Караганда):</label>
+            <select id="t2-mining">
+              <option value="">-- Выберите экологический режим --</option>
+              <option value="reclamation">Рекультивация нарушенных земель, внедрение безопасных технологий и очистных сооружений</option>
+              <option value="pasture_expansion">Расширение площади отгонных пастбищ</option>
+              <option value="wind_erosion">Борьба с пыльными бурями в степях</option>
+            </select>
+          </div>
+
+          <button onclick="verifyTask2()" class="btn btn-primary" style="width: 100%;">Утвердить концепции регионов</button>
+        </div>
+
+        <!-- Task 3: 4 задачи полномочий органов МСУ -->
+        <div id="task-view-3" class="card" style="display: none;">
+          <div class="badge" style="margin-bottom: 8px;">Задание 3</div>
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 6px;">4 законных полномочия органов МСУ (§ 18)</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            В тексте § 18 закреплен перечень из 4 важнейших полномочий местного самоуправления. Разместите все 4 типа объектов на карте населенного пункта:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+            <button class="btn btn-secondary btn-sm" onclick="setActivePlacement('landfill')" id="btn-place-landfill">[+] Содержание мест хранения и захоронения отходов (ТБО)</button>
+            <button class="btn btn-secondary btn-sm" onclick="setActivePlacement('sanitation')" id="btn-place-sanitation">[+] Санитарная очистка населенного пункта</button>
+            <button class="btn btn-secondary btn-sm" onclick="setActivePlacement('greenery')" id="btn-place-greenery">[+] Благоустройство и озеленение</button>
+            <button class="btn btn-secondary btn-sm" onclick="setActivePlacement('reserve')" id="btn-place-reserve">[+] Внесение предложений по охране природных объектов</button>
+          </div>
+
+          <button onclick="verifyTask3()" class="btn btn-primary" style="width: 100%;">Проверить инфраструктуру МСУ</button>
+        </div>
+
+        <div id="task-feedback" class="card" style="display: none; background: var(--bg-subtle);">
+          <div id="feedback-content" style="font-size: 12px;"></div>
+        </div>
+
+      </div>
+
+      <div class="card map-panel">
+        <div class="map-toolbar">
+          <span style="font-weight: 600;" id="map-mode-label">Карта: Природопользование и ландшафты РК</span>
+          <span id="map-hint" style="color: var(--text-muted);">Esri Light Gray Base Active</span>
+        </div>
+        <div id="map18" class="map-container"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="shared.js"></script>
+  <script>
+    let currentTask = 1;
+    let map = null;
+    let currentPlacement = null;
+    let placedMarkers = {};
+
+    function initModule() {
+      map = createStandardMap('map18', [49.5, 71.0], 5);
+      renderTask1Visual();
+      updateHeaderBadge();
+    }
+
+    function switchTask(taskNum) {
+      currentTask = taskNum;
+      document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === taskNum));
+      document.getElementById('task-view-1').style.display = taskNum === 1 ? 'block' : 'none';
+      document.getElementById('task-view-2').style.display = taskNum === 2 ? 'block' : 'none';
+      document.getElementById('task-view-3').style.display = taskNum === 3 ? 'block' : 'none';
+      document.getElementById('task-feedback').style.display = 'none';
+
+      map.eachLayer(l => {
+        if (l instanceof L.Circle || l instanceof L.Marker) map.removeLayer(l);
+      });
+
+      if (taskNum === 1) {
+        document.getElementById('map-mode-label').innerText = 'Карта: Административное деление и ландшафтная ёмкость РК';
+        map.setView([49.5, 71.0], 5);
+        renderTask1Visual();
+      } else if (taskNum === 2) {
+        document.getElementById('map-mode-label').innerText = 'Карта: Зерновые и горнорудные центры РК';
+        map.setView([51.0, 71.0], 5);
+        renderTask2Visual();
+      } else if (taskNum === 3) {
+        document.getElementById('map-mode-label').innerText = 'Карта: План населенного пункта (полномочия МСУ)';
+        map.setView([51.1694, 71.4491], 12);
+        renderTask3Visual();
+      }
+    }
+
+    function renderTask1Visual() {
+      L.marker([51.16, 71.42]).addTo(map).bindPopup('<b>Республиканский центр</b><br>Государственная стратегия устойчивого развития');
+      L.circle([49.8, 73.1], { radius: 120000, color: '#0f172a', fillColor: '#334155', fillOpacity: 0.3 }).addTo(map)
+        .bindPopup('<b>Категория «Регион»</b><br>Баланс экологической емкости территории и экономики');
+    }
+
+    function verifyTask1() {
+      const v1 = document.getElementById('p18-t1-categories').value;
+      const v2 = document.getElementById('p18-t1-levels').value;
+      const v3 = document.getElementById('p18-t1-capacity').value;
+
+      const fb = document.getElementById('task-feedback');
+      const fc = document.getElementById('feedback-content');
+      fb.style.display = 'block';
+
+      if (v1 === 'reg_settlement' && v2 === 'standard_5' && v3 === 'carrying_capacity') {
+        fc.innerHTML = '<span style="color:#059669; font-weight:700;">[OK] Верно.</span> Усвоены 2 категории (Регион и Населенный пункт), 5 уровней вертикали управления и принцип не разрушающей биосферу экономики.';
+        StateManager.setCompleted('p18_t1', 100);
+        showToast('Задание 1 выполнено', 'success');
+        updateHeaderBadge();
+      } else {
+        fc.innerHTML = '<span style="color:#dc2626; font-weight:700;">[X] Неверно.</span> Проверьте положения § 18 о категориях территорий РК и 5 уровнях согласованного управления.';
+      }
+    }
+
+    function renderTask2Visual() {
+      L.marker([53.2, 63.6]).addTo(map).bindPopup('<b>Костанайская область</b><br>Зерносеющие районы, ветровая эрозия почв, потеря гумуса');
+      L.marker([50.1, 82.6]).addTo(map).bindPopup('<b>Рудный Алтай (ВКО)</b><br>Горнодобыча, нарушение ландшафтов');
+      L.marker([49.8, 73.1]).addTo(map).bindPopup('<b>Карагандинский бассейн</b><br>Угольная промышленность, отвалы, шламонакопители');
+    }
+
+    function verifyTask2() {
+      const v1 = document.getElementById('t2-kostanay').value;
+      const v2 = document.getElementById('t2-mining').value;
+
+      const fb = document.getElementById('task-feedback');
+      const fc = document.getElementById('feedback-content');
+      fb.style.display = 'block';
+
+      if (v1 === 'wind_erosion' && v2 === 'reclamation') {
+        fc.innerHTML = '<span style="color:#059669; font-weight:700;">[OK] Точно.</span> Для Костаная утвержден режим защиты от ветровой эрозии и сохранения гумуса, для Рудного Алтая и Караганды — рекультивация и очистные сооружения.';
+        StateManager.setCompleted('p18_t2', 100);
+        showToast('Задание 2 выполнено', 'success');
+        updateHeaderBadge();
+      } else {
+        fc.innerHTML = '<span style="color:#dc2626; font-weight:700;">[X] Ошибка.</span> Сопоставьте специализацию районов с мерами, указанными в тексте § 18.';
+      }
+    }
+
+    function setActivePlacement(type) {
+      currentPlacement = type;
+      showToast('Тип выбран. Кликните по карте для размещения', 'info');
+    }
+
+    function renderTask3Visual() {
+      map.on('click', (e) => {
+        if (!currentPlacement) return;
+        if (placedMarkers[currentPlacement]) {
+          map.removeLayer(placedMarkers[currentPlacement]);
+        }
+        const marker = L.marker(e.latlng).addTo(map);
+        marker.bindPopup(`<b>${getPlacementLabel(currentPlacement)}</b>`).openPopup();
+        placedMarkers[currentPlacement] = marker;
+      });
+    }
+
+    function getPlacementLabel(key) {
+      if (key === 'landfill') return 'Место захоронения отходов производства и потребления';
+      if (key === 'sanitation') return 'Участок обеспечения санитарной очистки';
+      if (key === 'greenery') return 'Зона благоустройства и озеленения';
+      if (key === 'reserve') return 'Охраняемый природный объект';
+      return key;
+    }
+
+    function verifyTask3() {
+      const fb = document.getElementById('task-feedback');
+      const fc = document.getElementById('feedback-content');
+      fb.style.display = 'block';
+
+      if (Object.keys(placedMarkers).length >= 4) {
+        fc.innerHTML = '<span style="color:#059669; font-weight:700;">[OK] Полный комплекс сформирован.</span> Все 4 установленных законом полномочия органов МСУ (§ 18) обеспечены на плане населенного пункта.';
+        StateManager.setCompleted('p18_t3', 100);
+        showToast('Задание 3 выполнено', 'success');
+        updateHeaderBadge();
+      } else {
+        fc.innerHTML = '<span style="color:#dc2626; font-weight:700;">[X] Не все объекты размещены.</span> Необходимо нанести на план все 4 функции МСУ.';
+      }
+    }
+
+    function updateHeaderBadge() {
+      const count = [StateManager.isCompleted('p18_t1'), StateManager.isCompleted('p18_t2'), StateManager.isCompleted('p18_t3')].filter(Boolean).length;
+      const b = document.getElementById('module-progress');
+      b.innerText = `${count} / 3`;
+      if (count === 3) b.className = 'badge success';
+    }
+
+    window.addEventListener('DOMContentLoaded', initModule);
+  </script>
+</body>
+</html>

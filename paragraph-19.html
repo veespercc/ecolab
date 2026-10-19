@@ -1,0 +1,212 @@
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="shared.js"></script>
+  <script>
+    let map = null;
+    let chartInstance = null;
+    let selectedCountries = new Set();
+
+    // Все 9 стран из § 19 с экоследом выше 4 планет + отвлекающие варианты
+    const worldCountries = [
+      { id: 'uae', name: 'ОАЭ', coords: [24.0, 54.0], planets: 4.5, isOverFour: true },
+      { id: 'usa', name: 'США', coords: [38.0, -97.0], planets: 4.5, isOverFour: true },
+      { id: 'qatar', name: 'Катар', coords: [25.3, 51.2], planets: 4.8, isOverFour: true },
+      { id: 'denmark', name: 'Дания', coords: [56.2, 9.5], planets: 4.2, isOverFour: true },
+      { id: 'belgium', name: 'Бельгия', coords: [50.8, 4.4], planets: 4.1, isOverFour: true },
+      { id: 'estonia', name: 'Эстония', coords: [58.6, 25.0], planets: 4.0, isOverFour: true },
+      { id: 'canada', name: 'Канада', coords: [56.1, -106.3], planets: 4.3, isOverFour: true },
+      { id: 'australia', name: 'Австралия', coords: [-25.2, 133.7], planets: 4.4, isOverFour: true },
+      { id: 'ireland', name: 'Ирландия', coords: [53.4, -8.2], planets: 4.1, isOverFour: true },
+      { id: 'india', name: 'Индия', coords: [20.5, 78.9], planets: 0.8, isOverFour: false },
+      { id: 'chad', name: 'Чад', coords: [15.4, 18.7], planets: 0.7, isOverFour: false }
+    ];
+
+    function initModule() {
+      map = createStandardMap('map19', [20.0, 10.0], 2);
+      renderTask1Map();
+      initChart();
+      calcFootprint();
+      updateHeaderBadge();
+    }
+
+    function switchTask(taskNum) {
+      document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === taskNum));
+      document.getElementById('task-view-1').style.display = taskNum === 1 ? 'block' : 'none';
+      document.getElementById('task-view-2').style.display = taskNum === 2 ? 'block' : 'none';
+      document.getElementById('task-view-3').style.display = taskNum === 3 ? 'block' : 'none';
+      document.getElementById('task-feedback').style.display = 'none';
+
+      const chartWrap = document.getElementById('chart-wrapper');
+
+      map.eachLayer(l => {
+        if (l instanceof L.CircleMarker || l instanceof L.Marker) map.removeLayer(l);
+      });
+
+      if (taskNum === 1) {
+        chartWrap.style.display = 'none';
+        document.getElementById('map-mode-label').innerText = 'Мировая карта: 9 государств с экоследом выше 4 планет';
+        map.setView([20.0, 10.0], 2);
+        renderTask1Map();
+      } else if (taskNum === 2) {
+        chartWrap.style.display = 'none';
+        document.getElementById('map-mode-label').innerText = 'Зоны превышения экологической ёмкости («Выйти за пределы»)';
+        map.setView([35.0, 40.0], 3);
+        renderTask2Map();
+      } else if (taskNum === 3) {
+        chartWrap.style.display = 'flex';
+        document.getElementById('map-mode-label').innerText = 'Балансировка 6 слагаемых модели Wackernagel & Rees';
+      }
+    }
+
+    function renderTask1Map() {
+      worldCountries.forEach(c => {
+        const marker = L.circleMarker(c.coords, {
+          radius: 9,
+          color: selectedCountries.has(c.id) ? '#0f172a' : '#94a3b8',
+          fillColor: selectedCountries.has(c.id) ? '#0f172a' : '#e2e8f0',
+          fillOpacity: 0.85,
+          weight: 2
+        }).addTo(map);
+
+        marker.bindTooltip(`<b>${c.name}</b><br>Клик для включения в выборку`);
+
+        marker.on('click', () => {
+          if (selectedCountries.has(c.id)) selectedCountries.delete(c.id);
+          else selectedCountries.add(c.id);
+
+          marker.setStyle({
+            color: selectedCountries.has(c.id) ? '#0f172a' : '#94a3b8',
+            fillColor: selectedCountries.has(c.id) ? '#0f172a' : '#e2e8f0'
+          });
+        });
+      });
+    }
+
+    function verifyTask1() {
+      const vInd = document.getElementById('p19-t1-indicators').value;
+      const vIneq = document.getElementById('p19-t1-inequality').value;
+
+      const fb = document.getElementById('task-feedback');
+      const fc = document.getElementById('feedback-content');
+      fb.style.display = 'block';
+
+      const selected = Array.from(selectedCountries);
+      const minFourValid = selected.length >= 4;
+      const allAreHigh = selected.every(id => {
+        const item = worldCountries.find(c => c.id === id);
+        return item && item.isOverFour;
+      });
+
+      if (vInd === 'footprint_hdi' && vIneq === 'four_times' && minFourValid && allAreHigh) {
+        fc.innerHTML = '<span style="color:#059669; font-weight:700;">[OK] Верно.</span> Индикаторы устойчивого развития (экослед + ИЧР), разрыв в 4 раза и страны с гиперпотреблением (>4 планет) определены безупречно.';
+        StateManager.setCompleted('p19_t1', 100);
+        showToast('Задание 1 выполнено', 'success');
+        updateHeaderBadge();
+      } else {
+        fc.innerHTML = '<span style="color:#dc2626; font-weight:700;">[X] Неверно.</span> Проверьте связку экоследа с ИЧР, масштаб глобального неравенства (4 раза) и выделите на карте не менее 4 стран с экоследом выше 4 планет.';
+      }
+    }
+
+    function renderTask2Map() {
+      L.marker([53.0, 68.0]).addTo(map).bindPopup('<b>Целинные земли Северного Казахстана</b><br>Потеря качественных свойств почв и истощение гумуса.');
+      L.marker([-15.0, -20.0]).addTo(map).bindPopup('<b>Акватории Мирового океана</b><br>Чрезмерный перелов рыбы, истощение биоресурсов.');
+      L.marker([37.5, 126.9]).addTo(map).bindPopup('<b>Агломерации и мегаполисы</b><br>Выбросы, превышающие ассимиляционную емкость экосистем.');
+      L.marker([80.0, 0.0]).addTo(map).bindPopup('<b>Стратосфера</b><br>Разрушение озонового слоя фреонами (хлорсодержащими газами).');
+    }
+
+    function verifyTask2() {
+      const t1 = document.getElementById('t2-overshoot-1').value;
+      const t2 = document.getElementById('t2-overshoot-2').value;
+      const t3 = document.getElementById('t2-overshoot-3').value;
+      const t4 = document.getElementById('t2-overshoot-4').value;
+
+      const fb = document.getElementById('task-feedback');
+      const fc = document.getElementById('feedback-content');
+      fb.style.display = 'block';
+
+      if (t1 === 'humus_wind' && t2 === 'overfishing' && t3 === 'urban_air' && t4 === 'ozone_layer') {
+        fc.innerHTML = '<span style="color:#059669; font-weight:700;">[OK] Точно.</span> Все 4 примера превышения пределов биоёмкости из § 19 (целина, океан, мегаполисы, фреоны) классифицированы верно.';
+        StateManager.setCompleted('p19_t2', 100);
+        showToast('Задание 2 выполнено', 'success');
+        updateHeaderBadge();
+      } else {
+        fc.innerHTML = '<span style="color:#dc2626; font-weight:700;">[X] Ошибка.</span> Сопоставьте все 4 сферы человеческой деятельности с деградационными процессами из параграфа.';
+      }
+    }
+
+    function initChart() {
+      const ctx = document.getElementById('footprintChart').getContext('2d');
+      chartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Пашня', 'Пастбища', 'Леса (дерево/бумага)', 'Море', 'Инфраструктура', 'Абсорбция CO₂'],
+          datasets: [{
+            data: [1.5, 1.2, 0.9, 0.6, 0.4, 2.6],
+            backgroundColor: ['#f59e0b', '#84cc16', '#10b981', '#06b6d4', '#64748b', '#ef4444']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 9 } } }
+          }
+        }
+      });
+    }
+
+    function calcFootprint() {
+      const c = parseFloat(document.getElementById('sl-cropland').value);
+      const p = parseFloat(document.getElementById('sl-pasture').value);
+      const f = parseFloat(document.getElementById('sl-forest').value);
+      const fi = parseFloat(document.getElementById('sl-fishery').value);
+      const b = parseFloat(document.getElementById('sl-built').value);
+      const co = parseFloat(document.getElementById('sl-carbon').value);
+
+      document.getElementById('v-cropland').innerText = c;
+      document.getElementById('v-pasture').innerText = p;
+      document.getElementById('v-forest').innerText = f;
+      document.getElementById('v-fishery').innerText = fi;
+      document.getElementById('v-built').innerText = b;
+      document.getElementById('v-carbon').innerText = co;
+
+      const totalHectares = c + p + f + fi + b + co;
+      const earths = (totalHectares / 1.8).toFixed(1);
+
+      const pr = document.getElementById('planet-result');
+      pr.innerText = `${earths} планет`;
+      pr.style.color = earths <= 1.0 ? '#059669' : '#dc2626';
+
+      if (chartInstance) {
+        chartInstance.data.datasets[0].data = [c, p, f, fi, b, co];
+        chartInstance.update();
+      }
+    }
+
+    function verifyTask3() {
+      const val = parseFloat(document.getElementById('planet-result').innerText);
+      const fb = document.getElementById('task-feedback');
+      const fc = document.getElementById('feedback-content');
+      fb.style.display = 'block';
+
+      if (val <= 1.0) {
+        fc.innerHTML = '<span style="color:#059669; font-weight:700;">[OK] Баланс биоёмкости достигнут.</span> Сумма 6 слагаемых модели Wackernagel & Rees уложена в границы допустимой ёмкости одной планеты Земля.';
+        StateManager.setCompleted('p19_t3', 100);
+        showToast('Задание 3 выполнено', 'success');
+        updateHeaderBadge();
+      } else {
+        fc.innerHTML = `<span style="color:#dc2626; font-weight:700;">[X] Превышение биоёмкости (${val} планет).</span> Снизьте параметры потребления (особенно площади абсорбции выбросов CO₂ и сельхозугодий) до уровня ≤ 1.0 планеты.`;
+      }
+    }
+
+    function updateHeaderBadge() {
+      const count = [StateManager.isCompleted('p19_t1'), StateManager.isCompleted('p19_t2'), StateManager.isCompleted('p19_t3')].filter(Boolean).length;
+      const b = document.getElementById('module-progress');
+      b.innerText = `${count} / 3`;
+      if (count === 3) b.className = 'badge success';
+    }
+
+    window.addEventListener('DOMContentLoaded', initModule);
+  </script>
+</body>
+</html>

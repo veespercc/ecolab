@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>§ 20. Вода и «экологический след» — GEO-ECO LAB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="header-container">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <a href="index.html" class="btn btn-secondary btn-sm">На главную</a>
+        <div style="font-size: 13px; font-weight: 600;">§ 20. Вода и «экологический след»</div>
+      </div>
+      <div class="header-actions">
+        <span id="module-progress" class="badge">0 / 3</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="workspace-grid">
+      
+      <div class="sidebar-panel">
+        <div class="tabs-nav">
+          <button class="tab-btn active" onclick="switchTask(1)">Задание 1</button>
+          <button class="tab-btn" onclick="switchTask(2)">Задание 2</button>
+          <button class="tab-btn" onclick="switchTask(3)">Задание 3</button>
+        </div>
+
+        <!-- Task 1: Водный стресс vs Водный кризис + Шкала водозабора -->
+        <div id="task-view-1" class="card">
+          <div class="badge" style="margin-bottom: 8px;">Задание 1</div>
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 6px;">Шкала водного стресса и разграничение понятий</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            В тексте § 20 строго разграничены понятия водного стресса и кризиса, а также приведена методика оценки по соотношению водозабора к возобновляемым ресурсам:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Различие «водного кризиса» и «водного стресса» (§ 20):</label>
+              <select id="p20-t1-def">
+                <option value="">-- Выберите определение --</option>
+                <option value="correct_def">Кризис — хронический недостаток чистой воды и канализации с болезнями; Стресс — ситуация нехватки и следствие кризиса</option>
+                <option value="wrong_def">Это полные синонимы, не имеющие различий в гидроэкологии</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Водозабор менее 10% от возобновляемых ресурсов:</label>
+              <select id="p20-t1-scale1">
+                <option value="">-- Выберите статус --</option>
+                <option value="no_stress">Водного стресса нет</option>
+                <option value="weak">Слабая нехватка воды</option>
+                <option value="stress">Высокий уровень нехватки (водный стресс)</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Водозабор от 10% до 20%:</label>
+              <select id="p20-t1-scale2">
+                <option value="">-- Выберите статус --</option>
+                <option value="weak">Существует слабая нехватка воды</option>
+                <option value="moderate">Умеренное превышение</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Водозабор от 20% до 40%:</label>
+              <select id="p20-t1-scale3">
+                <option value="">-- Выберите статус --</option>
+                <option value="moderate">Умеренное превышение</option>
+                <option value="stress">Водный стресс</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Водозабор свыше 40%:</label>
+              <select id="p20-t1-scale4">
+                <option value="">-- Выберите статус --</option>
+                <option value="stress">Высокий уровень нехватки воды (водный стресс)</option>
+                <option value="moderate">Умеренное превышение</option>
+              </select>
+            </div>
+          </div>
+
+          <button onclick="verifyTask1()" class="btn btn-primary" style="width: 100%;">Проверить шкалу и определения</button>
+        </div>
+
+        <!-- Task 2: Водные ресурсы Казахстана и прогнозы Всемирного водного совета -->
+        <div id="task-view-2" class="card" style="display: none;">
+          <div class="badge" style="margin-bottom: 8px;">Задание 2</div>
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 6px;">Бассейны РК и прогнозы Всемирного водного совета</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            Дефицит пресной воды — острейшая экологическая проблема устойчивого развития РК, а воды рек и озер не соответствуют нормам. Соотнесите бассейны и мировые прогнозы:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 9px; margin-bottom: 14px;">
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Прогноз Всемирного водного совета на 2020 и 2100 гг. (§ 20):</label>
+              <select id="p20-t2-forecast">
+                <option value="">-- Выберите прогноз экспертов --</option>
+                <option value="wwc_forecast">К 2020 г. понадобится на 17% больше воды, чем есть; к 2100 г. исчерпание пресной воды</option>
+                <option value="optimistic">Запасы пресной воды возрастут вдвое за счет таяния вечной мерзлоты</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Бассейн Сырдарьи и Аральского моря:</label>
+              <select id="p20-t2-syr">
+                <option value="">-- Выберите гидроэкологический статус --</option>
+                <option value="syr_depletion">Превышение пределов водозабора на орошение, засоление и экологическая катастрофа дельты</option>
+                <option value="pristine">Соответствие высшим санитарным нормам питьевой воды</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Река Или и озеро Балхаш:</label>
+              <select id="p20-t2-balkhash">
+                <option value="">-- Выберите гидроэкологический статус --</option>
+                <option value="trans_deficit">Трансграничный водозабор и риск нарушения экологического равновесия гидроузла</option>
+                <option value="thermal">Загрязнение исключительно термальными стоками АЭС</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Река Иртыш:</label>
+              <select id="p20-t2-irtysh">
+                <option value="">-- Выберите гидроэкологический статус --</option>
+                <option value="heavy_industry">Интенсивный промышленный водозабор и регулирование стока водохранилищами</option>
+                <option value="no_pollution">Полное отсутствие антропогенного воздействия</option>
+              </select>
+            </div>
+          </div>
+
+          <button onclick="verifyTask2()" class="btn btn-primary" style="width: 100%;">Утвердить гидрографический анализ</button>
+        </div>
+
+        <!-- Task 3: Статистика кризиса и спад потребления (Япония, Чад, Нигерия) -->
+        <div id="task-view-3" class="card" style="display: none;">
+          <div class="badge" style="margin-bottom: 8px;">Задание 3</div>
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 6px;">Аридные зоны, мировая статистика и спад потребления</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            Внесите фундаментальные численные параметры из § 20 и определите страны со снижением водопотребления на душу населения:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 9px; margin-bottom: 14px;">
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Доля пресной воды от общемировых запасов гидросферы:</label>
+              <select id="p20-t3-share">
+                <option value="">-- Выберите долю --</option>
+                <option value="2.5">Всего 2.5% (распределены локально и неравномерно)</option>
+                <option value="15">Около 15%</option>
+                <option value="50">Более половины запасов</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Засушливые и полузасушливые регионы мира (§ 20):</label>
+              <select id="p20-t3-arid">
+                <option value="">-- Выберите соотношение суши и запасов --</option>
+                <option value="40_2">Составляют 40% суши, но используют лишь 2% мировых запасов воды</option>
+                <option value="20_20">Составляют 20% суши и располагают 20% запасов</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Страдающие от некачественной воды (город / село):</label>
+              <select id="p20-t3-pop">
+                <option value="">-- Выберите процент жителей планеты --</option>
+                <option value="20_75">20% городского и 75% сельского населения планеты</option>
+                <option value="5_10">5% городского и 10% сельского населения</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Страны со спадом потребления на душу населения (рост цен, экология, истощение):</label>
+              <div style="display: flex; gap: 12px; font-size: 12px; margin-top: 4px;">
+                <label><input type="checkbox" id="chk-p20-japan"> Япония</label>
+                <label><input type="checkbox" id="chk-p20-chad"> Чад</label>
+                <label><input type="checkbox" id="chk-p20-nigeria"> Нигерия</label>
+                <label><input type="checkbox" id="chk-p20-canada"> Канада</label>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="verifyTask3()" class="btn btn-primary" style="width: 100%;">Проверить глобальную статистику</button>
+        </div>
+
+        <div id="task-feedback" class="card" style="display: none; background: var(--bg-subtle);">
+          <div id="feedback-content" style="font-size: 12px;"></div>
+        </div>
+
+      </div>
+
+      <div class="card map-panel">
+        <div class="map-toolbar">
+          <span style="font-weight: 600;" id="map-mode-label">Карта: Гидрографическая сеть и мировой водный стресс</span>
+        </div>
+        <div id="map20" class="map-container"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="shared.js"></script>
+  <script>
+    let map = null;
+
+    function initModule() {
+      map = createStandardMap('map20', [48.0, 68.0], 5);
+      renderTask1Map();
+      updateHeaderBadge();
+    }
+
+    function switchTask(num) {
+      document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === num));
+      document.getElementById('task-view-1').style.display = num === 1 ? 'block' : 'none';
+      document.getElementById('task-view-2').style.display = num === 2 ? 'block' : 'none';
+      document.getElementById('task-view-3').style.display = num === 3 ? 'block' : 'none';
+      document.getElementById('task-feedback').style.display = 'none';
+
+      map.eachLayer(l => {
+        if (l instanceof L.Circle || l instanceof L.Marker || l instanceof L.Polyline) map.removeLayer(l);
+      });
+
+      if (num === 1) {
+        document.getElementById('map-mode-label').innerText = 'Карта: Водный стресс бассейнов мира (шкала ООН)';
+        map.setView([25.0, 30.0], 2);
+        renderTask1Map();
+      } else if (num === 2) {
+        document.getElementById('map-mode-label').innerText = 'Карта: Гидрографическая сеть и речные бассейны РК';
+        map.setView([46.5, 71.0], 5);
+        renderTask2Map();
+      } else if (num === 3) {
+        document.getElementById('map-mode-label').innerText = 'Карта: Аридные регионы мира и страны со спадом потребления';
+        map.setView([15.0, 20.0], 2);
+        renderTask3Map();
+      }
+    }
+
+    function renderTask1Map() {
+      L.circle([26.0, 35.0], { radius: 1200000, color: '#dc2626', fillColor: '#ef4444', fillOpacity: 0.35 }).addTo(map)
+        .bindPopup('<b>Северная Африка и Ближний Восток</b><br>Водозабор превышает 40% (Острый водный стресс)');
+      L.circle([55.0, 15.0], { radius: 700000, color: '#059669', fillColor: '#10b981', fillOpacity: 0.35 }).addTo(map)
+        .bindPopup('<b>Северная Европа</b><br>Водозабор < 10% (Стресса нет)');
+      L.circle([30.0, 75.0], { radius: 900000, color: '#d97706', fillColor: '#f59e0b', fillOpacity: 0.35 }).addTo(map)
+        .bindPopup('<b>Южная Азия</b><br>Водозабор 20–40% (Умеренное превышение)');
+    }
+
+    function verifyTask1() {
+      const def = document.getElementById('p20-t1-def').value;
+      const s1 = document.getElementById('p20-t1-scale1').value;
+      const s2 = document.getElementById('p20-t1-scale2').value;
+      const s3 = document.getElementById('p20-t1-scale3').value;
+      const s4 = document.getElementById('p20-t1-scale4').value;
+
+      const fb = document.getElementById('task-feedback');
+      const fc = document.getElementById('feedback-content');
+      fb.style.display = 'block';
+
+      if (def === 'correct_def' && s1 === 'no_stress' && s2 === 'weak' && s3 === 'moderate' && s4 === 'stress') {
+        fc.innerHTML = '<span style="color:#059669; font-weight:700;">[OK] Верно.</span> Четко разграничены понятия стресса и кризиса, а шкала соотношения водозабора к возобновляемым ресурсам усвоена безупречно.';
+        StateManager.setCompleted('p20_t1', 100);
+        showToast('Задание 1 выполнено', 'success');
+        updateHeaderBadge();
+      } else {
+        fc.innerHTML = '<span style="color:#dc2626; font-weight:700;">[X] Ошибка.</span> Повторите определения «водного стресса» и «водного кризиса», а также 4 градации шкалы водозабора из § 20.';
+      }
+    }
+
+    function renderTask2Map() {
+      L.polyline([[41.5, 68.0], [44.8, 65.5], [46.0, 61.0]], { color: '#0284c7', weight: 4 }).addTo(map)
+        .bindPopup('<b>Река Сырдарья и Северный Арал</b><br>Ирригационный дефицит стока.');
+      L.polyline([[44.0, 80.0], [45.0, 77.0], [45.3, 74.0]], { color: '#0284c7', weight: 4 }).addTo(map)
+        .bindPopup('<b>Река Или и озеро Балхаш</b><br>Угроза повторения аральского сценария.');
+      L.polyline([[47.5, 84.5], [50.4, 80.2], [52.3, 76.9]], { color: '#0284c7', weight: 4 }).addTo(map)
+        .bindPopup('<b>Река Иртыш</b><br>Главная трансграничная магистраль с каналом Иртыш — Караганда.');
+    }
+
+    function verifyTask2() {
+      const fcast = document.getElementById('p20-t2-forecast').value;
+      const syr = document.getElementById('p20-t2-syr').value;
+      const balkh = document.getElementById('p20-t2-balkhash').value;
+      const irt = document.getElementById('p20-t2-irtysh').value;
+
+      const fb = document.getElementById('task-feedback');
+      const fc = document.getElementById('feedback-content');
+      fb.style.display = 'block';
+
+      if (fcast === 'wwc_forecast' && syr === 'syr_depletion' && balkh === 'trans_deficit' && irt === 'heavy_industry') {
+        fc.innerHTML = '<span style="color:#059669; font-weight:700;">[OK] Точно.</span> Прогноз Всемирного водного совета (+17% к 2020 г., риск исчерпания к 2100 г.) и анализ бассейнов РК полностью подтверждены.';
+        StateManager.setCompleted('p20_t2', 100);
+        showToast('Задание 2 выполнено', 'success');
+        updateHeaderBadge();
+      } else {
+        fc.innerHTML = '<span style="color:#dc2626; font-weight:700;">[X] Неверный анализ.</span> Сверьте прогноз Всемирного водного совета и специфику речных бассейнов из § 20.';
+      }
+    }
+
+    function renderTask3Map() {
+      L.marker([15.4, 18.7]).addTo(map).bindPopup('<b>Чад</b><br>Спад подушевого потребления (истощение водных запасов, высыхание озера Чад)');
+      L.marker([9.0, 8.6]).addTo(map).bindPopup('<b>Нигерия</b><br>Спад потребления (дефицит очищенной воды, рост населения)');
+      L.marker([36.2, 138.2]).addTo(map).bindPopup('<b>Япония</b><br>Спад подушевого потребления (экологические последствия и рост цен)');
+      L.circle([20.0, 10.0], { radius: 1800000, color: '#d97706', fillOpacity: 0.15 }).addTo(map)
+        .bindPopup('<b>Аридный пояс Старого Света</b><br>40% суши / 2% мировых запасов пресной воды');
+    }
+
+    function verifyTask3() {
+      const share = document.getElementById('p20-t3-share').value;
+      const arid = document.getElementById('p20-t3-arid').value;
+      const pop = document.getElementById('p20-t3-pop').value;
+
+      const j = document.getElementById('chk-p20-japan').checked;
+      const ch = document.getElementById('chk-p20-chad').checked;
+      const n = document.getElementById('chk-p20-nigeria').checked;
+      const can = document.getElementById('chk-p20-canada').checked;
+
+      const fb = document.getElementById('task-feedback');
+      const fc = document.getElementById('feedback-content');
+      fb.style.display = 'block';
+
+      if (share === '2.5' && arid === '40_2' && pop === '20_75' && j && ch && n && !can) {
+        fc.innerHTML = '<span style="color:#059669; font-weight:700;">[OK] Отлично!</span> Усвоены фундаментальные данные: пресной воды лишь 2.5%; аридные зоны (40% суши / 2% запасов); 20% горожан и 75% сельчан страдают от некачественной воды; в Японии, Чаде и Нигерии падает душевое потребление.';
+        StateManager.setCompleted('p20_t3', 100);
+        showToast('Задание 3 выполнено', 'success');
+        updateHeaderBadge();
+      } else {
+        fc.innerHTML = '<span style="color:#dc2626; font-weight:700;">[X] Неверные данные.</span> Проверьте долю пресной воды (2.5%), характеристики аридных зон (40% суши / 2% запасов) и три страны со спадом потребления из текста § 20.';
+      }
+    }
+
+    function updateHeaderBadge() {
+      const count = [StateManager.isCompleted('p20_t1'), StateManager.isCompleted('p20_t2'), StateManager.isCompleted('p20_t3')].filter(Boolean).length;
+      const b = document.getElementById('module-progress');
+      b.innerText = `${count} / 3`;
+      if (count === 3) b.className = 'badge success';
+    }
+
+    window.addEventListener('DOMContentLoaded', initModule);
+  </script>
+</body>
+</html>

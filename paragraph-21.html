@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>§ 21. Устойчивое водопользование — GEO-ECO LAB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="header-container">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <a href="index.html" class="btn btn-secondary btn-sm">На главную</a>
+        <div style="font-size: 13px; font-weight: 600;">§ 21. Устойчивое водопользование</div>
+      </div>
+      <div class="header-actions">
+        <span id="module-progress" class="badge">0 / 3</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="workspace-grid">
+      
+      <div class="sidebar-panel">
+        <div class="tabs-nav">
+          <button class="tab-btn active" onclick="switchTask(1)">Задание 1</button>
+          <button class="tab-btn" onclick="switchTask(2)">Задание 2</button>
+          <button class="tab-btn" onclick="switchTask(3)">Задание 3</button>
+        </div>
+
+        <!-- Task 1: ВСУР 2002, ПРООН, ИУВР и технологии водосбережения -->
+        <div id="task-view-1" class="card">
+          <div class="badge" style="margin-bottom: 8px;">Задание 1</div>
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 6px;">Решения саммита ВСУР 2002, планы ИУВР и агротехнологии</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            Всемирный саммит 2002 г. и ПРООН определили базовые направления эффективности водопользования и внедрения планов ИУВР. Укажите нормативы и принципы:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 9px; margin-bottom: 14px;">
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Что предписано решением Всемирного саммита (ВСУР 2002):</label>
+              <select id="p21-t1-summit">
+                <option value="">-- Выберите обязательство стран --</option>
+                <option value="iuwr_plans">Разработка национальных планов интегрированного управления водными ресурсами (ИУВР)</option>
+                <option value="privatization">Полная приватизация всех естественных водоемов</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Показатели капельного орошения по сравнению с традиционным (§ 21):</label>
+              <select id="p21-t1-drip">
+                <option value="">-- Выберите параметры экономии и урожайности --</option>
+                <option value="30_70_drip">Воды требуется меньше на 30–70%, урожайность повышается на 20–90%</option>
+                <option value="10_10_drip">Экономия воды 10%, урожайность не меняется</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Принцип соответствия качества воды видам использования (§ 21):</label>
+              <select id="p21-t1-quality">
+                <option value="">-- Выберите правило распределения --</option>
+                <option value="diff_quality">Для приусадебных участков — дождевая вода, для промышленных целей — вода из стоков</option>
+                <option value="potable_all">Использование питьевой артезианской воды для охлаждения металлургических печей</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Эффект домашних водосберегающих устройств (аэраторов и регуляторов):</label>
+              <select id="p21-t1-home">
+                <option value="">-- Выберите потенциал экономии --</option>
+                <option value="50_percent">Уменьшают расход воды до 50%, доступны технически и финансово</option>
+                <option value="10_percent">Экономят не более 10% воды</option>
+              </select>
+            </div>
+          </div>
+
+          <button onclick="verifyTask1()" class="btn btn-primary" style="width: 100%;">Проверить стандарты водосбережения</button>
+        </div>
+
+        <!-- Task 2: Устранение утечек (25%) и металлополимерный бандаж -->
+        <div id="task-view-2" class="card" style="display: none;">
+          <div class="badge" style="margin-bottom: 8px;">Задание 2</div>
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 6px;">Ликвидация 25% потерь: металлополимерный бандаж</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            Примерно 25% перекачиваемой по трубопроводам воды теряется из-за протечек. Самый технологичный способ ремонта — наложение металлополимерного бандажа. Ответьте на вопросы технологии и отремонтируйте водоводы РК:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 9px; margin-bottom: 14px;">
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Состав металлополимерного бандажа (§ 21):</label>
+              <select id="p21-t2-material">
+                <option value="">-- Выберите формулу состава --</option>
+                <option value="resin_dust">Двухкомпонентная полимерная смола, армированная металлической пылью</option>
+                <option value="cement">Обычный цементный раствор с песком</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Техническое условие монтажа бандажа на поврежденный участок:</label>
+              <select id="p21-t2-condition">
+                <option value="">-- Выберите обязательное условие --</option>
+                <option value="wet_no_pressure">Можно накладывать на влажные участки; важно, чтобы трубопровод не был под сильным давлением</option>
+                <option value="full_dry">Труба должна быть предварительно прокалена до 200°C</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="font-size: 12px; background: var(--bg-subtle); padding: 8px 12px; border-radius: var(--radius-sm); margin-bottom: 12px;">
+            Устранено протечек на карте: <b id="leak-fixed-count">0 / 3</b>
+          </div>
+
+          <button onclick="verifyTask2()" class="btn btn-primary" style="width: 100%;">Зафиксировать ремонт сетей</button>
+        </div>
+
+        <!-- Task 3: Климатическая адаптация, прогноз МГЭИК и ледники Тянь-Шаня/Алтая -->
+        <div id="task-view-3" class="card" style="display: none;">
+          <div class="badge" style="margin-bottom: 8px;">Задание 3</div>
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 6px;">МГЭИК, таяние горных ледников и засухоустойчивые культуры</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            Глобальное потепление вызвало сокращение площади ледников, угрожающее водообеспечению поселений востока и юго-востока Казахстана. Сформулируйте стратегию адаптации:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 9px; margin-bottom: 14px;">
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Прогноз группы МГЭИК по изменению стока рек при потеплении климата:</label>
+              <select id="p21-t3-ipcc">
+                <option value="">-- Выберите прогноз стока --</option>
+                <option value="ipcc_forecast">Увеличение стока на 10–40% в одних регионах, сокращение на 10–30% в других</option>
+                <option value="equal_runoff">Строго одинаковое изменение стока на всех континентах</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Городское водопользование: сбор дождевой воды с крыш зданий решает задачу:</label>
+              <select id="p21-t3-urban">
+                <option value="">-- Выберите целевое назначение --</option>
+                <option value="urban_greenery">Полива цветников, газонов, кустарников и деревьев</option>
+                <option value="boiler">Использования в паровых турбинах ТЭЦ без водоподготовки</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600;">Агро-экологическая мера в районах с жарким и сухим климатом (§ 21):</label>
+              <select id="p21-t3-plants">
+                <option value="">-- Выберите правильную культуру --</option>
+                <option value="xerophytes">Высаживание растений, не требующих дополнительного полива или большого количества воды</option>
+                <option value="hygrophytes">Массовый сев влаголюбивых тропических культур на открытом грунте</option>
+              </select>
+            </div>
+          </div>
+
+          <button onclick="verifyTask3()" class="btn btn-primary" style="width: 100%;">Утвердить климатическую адаптацию</button>
+        </div>
+
+        <div id="task-feedback" class="card" style="display: none; background: var(--bg-subtle);">
+          <div id="feedback-content" style="font-size: 12px;"></div>
+        </div>
+
+      </div>
+
+      <div class="card map-panel">
+        <div class="map-toolbar">
+          <span style="font-weight: 600;" id="map-mode-label">Инфраструктура водоводов и ледниковые пояса Тянь-Шаня/Алтая</span>
+        </div>
+        <div id="map21" class="map-container"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="shared.js"></script>
+  <script>
+    let map = null;
+    let fixedLeaks = 0;
+
+    const pipelineLeaks = [
+      { id: 1, coords: [47.1, 51.9], title: 'Магистральный водовод Астрахань — Мангышлак', fixed: false },
+      { id: 2, coords: [49.8, 73.2], title: 'Трубопроводный узел Караганда — Темиртау', fixed: false },
+      { id: 3, coords: [43.3, 68.3], title: 'Водоводы Туркестанского и Кызылординского секторов', fixed: false }
+    ];
+
+    function initModule() {
+      map = createStandardMap('map21', [48.0, 71.0], 5);
+      renderTask1Map();
+      updateHeaderBadge();
+    }
+
+    function switchTask(num) {
+      document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === num));
+      document.getElementById('task-view-1').style.display = num === 1 ? 'block' : 'none';
+      document.getElementById('task-view-2').style.display = num === 2 ? 'block' : 'none';
+      document.getElementById('task-view-3').style.display = num === 3 ? 'block' : 'none';
+      document.getElementById('task-feedback').style.display = 'none';
+
+      map.eachLayer(l => {
+        if (l instanceof L.Marker || l instanceof L.Circle) map.removeLayer(l);
+      });
+
+      if (num === 1) {
+        document.getElementById('map-mode-label').innerText = 'Агротехнологии: Зоны внедрения капельного орошения на юге РК (-30–70% расхода)';
+        map.setView([43.5, 71.0], 6);
+        renderTask1Map();
+      } else if (num === 2) {
+        document.getElementById('map-mode-label').innerText = 'Ликвидация 25% потерь воды: Наложение металлополимерного бандажа';
+        map.setView([47.0, 68.0], 5);
+        renderTask2Map();
+      } else if (num === 3) {
+        document.getElementById('map-mode-label').innerText = 'Мониторинг горных ледников Тянь-Шаня и Алтая (Восток и Юго-Восток РК)';
+        map.setView([45.0, 78.5], 6);
+        renderTask3Map();
+      }
+    }
+
+    function renderTask1Map() {
+      L.circle([42.5, 69.6], { radius: 110000, color: '#0f172a', fillColor: '#334155', fillOpacity: 0.35 }).addTo(map)
+        .bindPopup('<b>Южный Казахстан</b><br>Приоритет ИУВР: внедрение капельного орошения (экономия 30–70%, урожайность +20–90%)');
+    }
+
+    function verifyTask1() {
+      const s1 = document.getElementById('p21-t1-summit').value;
+      const s2 = document.getElementById('p21-t1-drip').value;
+      const s3 = document.getElementById('p21-t1-quality').value;
+      const s4 = document.getElementById('p21-t1-home').value;
+
+      const fb = document.getElementById('task-feedback');
+      const fc = document.getElementById('feedback-content');
+      fb.style.display = 'block';
+
+      if (s1 === 'iuwr_plans' && s2 === '30_70_drip' && s3 === 'diff_quality' && s4 === '50_percent') {
+        fc.innerHTML = '<span style="color:#059669; font-weight:700;">[OK] Верно.</span> Усвоены решения саммита ВСУР 2002 по планам ИУВР, дифференциация качества воды, нормативы капельного орошения (-30–70% воды, +20–90% урожая) и бытовых приборов (до 50%).';
+        StateManager.setCompleted('p21_t1', 100);
+        showToast('Задание 1 выполнено', 'success');
+        updateHeaderBadge();
+      } else {
+        fc.innerHTML = '<span style="color:#dc2626; font-weight:700;">[X] Неверно.</span> Проверьте решения Всемирного саммита (ИУВР), нормативы капельного орошения и бытовых приборов из § 21.';
+      }
+    }
+
+    function renderTask2Map() {
+      pipelineLeaks.forEach(lk => {
+        const marker = L.circleMarker(lk.coords, {
+          radius: 9,
+          color: lk.fixed ? '#059669' : '#dc2626',
+          fillColor: lk.fixed ? '#10b981' : '#ef4444',
+          fillOpacity: 0.85
+        }).addTo(map);
+
+        marker.bindPopup(`<b>${lk.title}</b><br>Статус: ${lk.fixed ? 'Бандаж наложен (потери 25% ликвидированы)' : 'Утечка транспортируемой воды! Кликните для ремонта металлополимером.'}`);
+
+        marker.on('click', () => {
+          if (!lk.fixed) {
+            lk.fixed = true;
+            fixedLeaks++;
+            marker.setStyle({ color: '#059669', fillColor: '#10b981' });
+            marker.setPopupContent(`<b>${lk.title}</b><br>[OK] Бандаж смонтирован: двухкомпонентная смола с металлической пылью полимеризована.`);
+            document.getElementById('leak-fixed-count').innerText = `${fixedLeaks} / 3`;
+            showToast('Утечка ликвидирована металлополимером', 'info');
+          }
+        });
+      });
+    }
+
+    function verifyTask2() {
+      const mat = document.getElementById('p21-t2-material').value;
+      const cond = document.getElementById('p21-t2-condition').value;
+
+      const fb = document.getElementById('task-feedback');
+      const fc = document.getElementById('feedback-content');
+      fb.style.display = 'block';
+
+      if (mat === 'resin_dust' && cond === 'wet_no_pressure' && fixedLeaks >= 3) {
+        fc.innerHTML = '<span style="color:#059669; font-weight:700;">[OK] Ремонт завершен.</span> Состав бандажа (двухкомпонентная смола с металлической пылью), условие отсутствия высокого давления и полевой ремонт всех 3 участков водоводов выполнены безупречно.';
+        StateManager.setCompleted('p21_t2', 100);
+        showToast('Задание 2 выполнено', 'success');
+        updateHeaderBadge();
+      } else {
+        fc.innerHTML = '<span style="color:#dc2626; font-weight:700;">[X] Не завершено.</span> Укажите состав металлополимерного бандажа, условие монтажа (§ 21) и устраните все 3 утечки на карте кликом.';
+      }
+    }
+
+    function renderTask3Map() {
+      L.marker([43.05, 77.08]).addTo(map).bindPopup('<b>Ледники Заилийского Алатау (Тянь-Шань)</b><br>Критическое сокращение площади, влияние на водоснабжение Алматинской агломерации');
+      L.marker([49.52, 85.95]).addTo(map).bindPopup('<b>Ледники Рудного Алтая</b><br>Формирование истоков Иртыша и трансграничного стока');
+    }
+
+    function verifyTask3() {
+      const ipcc = document.getElementById('p21-t3-ipcc').value;
+      const urb = document.getElementById('p21-t3-urban').value;
+      const pl = document.getElementById('p21-t3-plants').value;
+
+      const fb = document.getElementById('task-feedback');
+      const fc = document.getElementById('feedback-content');
+      fb.style.display = 'block';
+
+      if (ipcc === 'ipcc_forecast' && urb === 'urban_greenery' && pl === 'xerophytes') {
+        fc.innerHTML = '<span style="color:#059669; font-weight:700;">[OK] Стратегия климатической адаптации утверждена!</span> Прогноз МГЭИК (+10–40% или -10–30% стока рек), сбор дождевой воды с крыш для полива газонов и посадка засухоустойчивых культур формируют устойчивое водопользование.';
+        StateManager.setCompleted('p21_t3', 100);
+        showToast('Задание 3 выполнено', 'success');
+        updateHeaderBadge();
+      } else {
+        fc.innerHTML = '<span style="color:#dc2626; font-weight:700;">[X] Ошибка стратегии.</span> Сверьте прогноз МГЭИК, назначение сбора дождевой воды с крыш и агроэкологические меры в сухом климате из § 21.';
+      }
+    }
+
+    function updateHeaderBadge() {
+      const count = [StateManager.isCompleted('p21_t1'), StateManager.isCompleted('p21_t2'), StateManager.isCompleted('p21_t3')].filter(Boolean).length;
+      const b = document.getElementById('module-progress');
+      b.innerText = `${count} / 3`;
+      if (count === 3) b.className = 'badge success';
+    }
+
+    window.addEventListener('DOMContentLoaded', initModule);
+  </script>
+</body>
+</html>
